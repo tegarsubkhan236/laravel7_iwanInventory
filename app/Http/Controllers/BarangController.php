@@ -1,0 +1,122 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Barang;
+use App\Pembelian;
+use App\Providers\AppServiceProvider;
+
+class BarangController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $data = Barang::all();
+        $pembelian = Pembelian::all();
+        // $pembelian = Pembelian::where($data->pemesanan->barang_id, $data->id);
+        return view('barang.index', compact('data', 'pembelian'));
+        // return $data[1];
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $validateData = $request->validate([
+            'nama_parfum' => 'required',
+            'jumlah_parfum' => 'required',
+            'harga_pembelian' => 'numeric|required',
+            'harga_penjualan' => 'numeric|required|Harga_penjualan_harus_lebih_besar_dari_harga_pembelian:harga_pembelian',
+        ]);
+        $messages = [
+            'validation.greater_than_field' => ' harus lebih besar dari harga pembelian.',
+        ];
+        $data = new Barang;
+        $data->nama_parfum = $request->nama_parfum;
+        $data->jumlah_parfum = $request->jumlah_parfum;
+        $data->harga_pembelian = $request->harga_pembelian;
+        $data->harga_penjualan = $request->harga_penjualan;
+        $data->save();
+        return redirect('barang')->with('status', 'Data parfum berhasil di Tambah !');
+        // return $request;
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $data = Barang::find($id);
+        return view("barang.update", compact('data'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $validateData = $request->validate([
+            'nama_parfum' => 'required',
+            'jumlah_parfum' => 'required',
+            'harga_pembelian' => 'required',
+            'harga_penjualan' => 'required',
+        ]);
+        $data = Barang::find($id);
+        $data->nama_parfum = $request->nama_parfum;
+        $data->jumlah_parfum = $request->jumlah_parfum;
+        $data->harga_pembelian = $request->harga_pembelian;
+        $data->harga_penjualan = $request->harga_penjualan;
+        $data->save();
+        return redirect('barang')->with('status', 'Data parfum berhasil di Update !');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $data = Barang::find($id);
+        $data->delete();
+        return redirect('barang')->with('status', 'Data parfum berhasil di Delete!');
+    }
+}
