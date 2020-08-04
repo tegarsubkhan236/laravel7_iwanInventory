@@ -1,17 +1,25 @@
 @extends('main')
-@section('content')
-<div class="container-fluid">
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Table Supplier</h1>
-    </div>
+@section('title', 'supplier')
 
-    <!-- DataTales Example -->
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Edit Data Supplier Parfum</h6>
-        </div>
-        <div class="card-body">
-        <div class="table-responsive">
+@section('content')
+    <div class="content mt-3">
+        <div class="animated fadeIn">
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="pull-left">
+                        <strong>Data supplier</strong>
+                    </div>
+                    <div class="pull-right">
+                        <a href="{{ url('supplier') }}" class="btn btn-secondary btn-sm">
+                            <i class="fa fa-undo"></i>Back
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    
+                    <div class="row">
+                        <div class="col-md-4 offset-md-4">
             <form action="{{url('supplier',$data->id)}}" method="POST">
                 @method('PATCH')
                 @csrf
@@ -48,13 +56,38 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+
+                <div class="form-group">
+                    <label>Min Parfum</label>
+                    <input type="number" 
+                    name="min_parfum" 
+                    value="{{ old('min_parfum', $data->min_parfum) }}" 
+                    class="form-control 
+                    @error('min_parfum') is-invalid @enderror" autofocus>
+                    @error('min_parfum')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label>Min Botol</label>
+                    <input type="number" 
+                    name="min_botol" 
+                    value="{{ old('min_botol', $data->min_botol) }}" 
+                    class="form-control 
+                    @error('min_botol') is-invalid @enderror" autofocus>
+                    @error('min_botol')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
                 
-                <button class="btn btn-secondary" type="button" onclick="history.go(-1);" data-dismiss="modal">Cancel</button>
-                <button class="btn btn-success" type="submit">Save</button>
-            </form>
-        </div>
+                <button class="btn btn-success" type="submit">Update</button>
+        </form>
         </div>
     </div>
-    </div>
+</div>
+</div>
+
+</div>
 </div>
 @endsection

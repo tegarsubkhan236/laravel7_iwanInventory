@@ -6,9 +6,18 @@ use Illuminate\Http\Request;
 use App\Barang;
 use App\Pembelian;
 use App\Providers\AppServiceProvider;
+use PDF;
 
 class BarangController extends Controller
 {
+    public function cetak()
+    {
+        $data = Barang::all();
+        $tanggal = Barang::latest('created_at')->first();
+
+        $pdf = PDF::loadview('laporan_parfum', compact('data', 'tanggal'));
+        return $pdf->download('laporan_parfum');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -18,9 +27,7 @@ class BarangController extends Controller
     {
         $data = Barang::all();
         $pembelian = Pembelian::all();
-        // $pembelian = Pembelian::where($data->pemesanan->barang_id, $data->id);
         return view('barang.index', compact('data', 'pembelian'));
-        // return $data[1];
     }
 
     /**
@@ -30,7 +37,7 @@ class BarangController extends Controller
      */
     public function create()
     {
-        //
+        return view('barang.add');
     }
 
     /**
@@ -44,8 +51,9 @@ class BarangController extends Controller
         $validateData = $request->validate([
             'nama_parfum' => 'required',
             'jumlah_parfum' => 'required',
-            'harga_pembelian' => 'numeric|required',
-            'harga_penjualan' => 'numeric|required|Harga_penjualan_harus_lebih_besar_dari_harga_pembelian:harga_pembelian',
+            'harga_penjualan' => 'numeric|required|lebih_dari:harga_reseller',
+            'harga_reseller' => 'numeric|required',
+            // 'harga_penjualan' => 'numeric|required|Harga_penjualan_harus_lebih_besar_dari_harga_pembelian:harga_pembelian',
         ]);
         $messages = [
             'validation.greater_than_field' => ' harus lebih besar dari harga pembelian.',
@@ -53,8 +61,8 @@ class BarangController extends Controller
         $data = new Barang;
         $data->nama_parfum = $request->nama_parfum;
         $data->jumlah_parfum = $request->jumlah_parfum;
-        $data->harga_pembelian = $request->harga_pembelian;
         $data->harga_penjualan = $request->harga_penjualan;
+        $data->harga_reseller = $request->harga_reseller;
         $data->save();
         return redirect('barang')->with('status', 'Data parfum berhasil di Tambah !');
         // return $request;
@@ -95,14 +103,14 @@ class BarangController extends Controller
         $validateData = $request->validate([
             'nama_parfum' => 'required',
             'jumlah_parfum' => 'required',
-            'harga_pembelian' => 'required',
-            'harga_penjualan' => 'required',
+            'harga_penjualan' => 'numeric|required|lebih_dari:harga_reseller',
+            'harga_reseller' => 'numeric|required',
         ]);
         $data = Barang::find($id);
         $data->nama_parfum = $request->nama_parfum;
         $data->jumlah_parfum = $request->jumlah_parfum;
-        $data->harga_pembelian = $request->harga_pembelian;
         $data->harga_penjualan = $request->harga_penjualan;
+        $data->harga_reseller = $request->harga_reseller;
         $data->save();
         return redirect('barang')->with('status', 'Data parfum berhasil di Update !');
     }

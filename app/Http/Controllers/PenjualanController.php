@@ -4,13 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Penjualan;
-use App\Pelanggan;
 use App\Barang;
 use App\Botol;
-
+use PDF;
 
 class PenjualanController extends Controller
 {
+    public function cetak()
+    {
+        $penjualan = Penjualan::with('barang', 'botol')->get();
+        $barang = Barang::all();
+        $botol = Botol::all();
+        $total = Penjualan::with('barang', 'botol')->sum('total_penjualan');
+        $tanggal = Penjualan::latest('created_at')->first();
+
+        $pdf = PDF::loadview('laporan_penjualan', compact('penjualan', 'barang', 'botol', 'total', 'tanggal'));
+        return $pdf->download('laporan_penjualan');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -18,12 +28,12 @@ class PenjualanController extends Controller
      */
     public function index()
     {
-        $penjualan = Penjualan::with('pelanggan', 'barang', 'botol')->get();
-        $pelanggan = Pelanggan::all();
+        $penjualan = Penjualan::with('barang', 'botol')->get();
         $barang = Barang::all();
         $botol = Botol::all();
-        return view('penjualan.index', compact('penjualan', 'pelanggan', 'barang', 'botol'));
-        // return $penjualan;
+        $total = Penjualan::with('barang', 'botol')->sum('total_penjualan');
+        return view('penjualan.index', compact('penjualan', 'barang', 'botol', 'total'));
+        // return $total_penjualan;
     }
 
     /**
@@ -33,7 +43,9 @@ class PenjualanController extends Controller
      */
     public function create()
     {
-        //
+        $barang = Barang::all();
+        $botol = Botol::all();
+        return view('penjualan.add', compact('barang', 'botol'));
     }
 
     /**
@@ -47,33 +59,28 @@ class PenjualanController extends Controller
         $validateData = $request->validate([
             'jumlah' => 'required',
             'barang_id' => 'required',
-            'pelanggan_id' => 'required',
         ]);
         $penjualan = new Penjualan;
 
-        if ($request['botol_id'] === 'null') {
-            $request['botol_id'] = null; // or 'NULL' for SQL
-        } else {
-            $botol_id = $request['botol_id'];
-            $botol_id_explode = explode('|', $botol_id);
+        $botol_id = $request['botol_id'];
+        $botol_id_explode = explode('|', $botol_id);
 
-            $penjualan->botol_id = $botol_id_explode[0];
+        $botol = Botol::findOrFail($botol_id_explode[0]);
+        $botol->jumlah_botol -= 1;
+        $botol->save();
 
-            $botol = Botol::findOrFail($botol_id_explode[0]);
-            $botol->jumlah_botol -= $botol_id_explode[1];
-            $botol->save();
-        }
-
-
-        $penjualan->pelanggan_id = $request->pelanggan_id;
-        $penjualan->jumlah = $request->jumlah;
-        $penjualan->barang_id = $request->barang_id;
-        $penjualan->total_penjualan = 0;
-        $penjualan->save();
+        $barang_id = $request['barang_id'];
+        $barang_id_explode = explode('|', $barang_id);
 
         $barang = Barang::findOrFail($request->barang_id);
         $barang->jumlah_parfum -= $request->jumlah;
         $barang->save();
+
+        $penjualan->botol_id = $botol_id_explode[0];
+        $penjualan->barang_id = $barang_id_explode[0];
+        $penjualan->jumlah = $request->jumlah;
+        $penjualan->total_penjualan = $request->jumlah * $barang_id_explode[1] + $botol_id_explode[1];
+        $penjualan->save();
 
         return redirect('penjualan')->with('status', 'Data penjualan berhasil di Tambah !');
     }
@@ -99,7 +106,10 @@ class PenjualanController extends Controller
     public function edit($id)
     {
         $penjualan = Penjualan::find($id);
-        return view('penjualan.update', ['penjualan' => $penjualan]);
+        // return view('penjualan.update', ['penjualan' => $penjualan]);
+
+        $pdf = PDF::loadview('nota_penjualan_full', compact('penjualan'))->setPaper('a4', 'landscape');
+        return $pdf->download('nota_penjualan_full');
     }
 
     /**

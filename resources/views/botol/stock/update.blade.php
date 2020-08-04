@@ -1,17 +1,25 @@
 @extends('main')
-@section('content')
-<div class="container-fluid">
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Table Botol</h1>
-    </div>
+@section('title', 'Botol')
 
-    <!-- DataTales Example -->
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Edit Data Botol</h6>
-        </div>
-        <div class="card-body">
-        <div class="table-responsive">
+@section('content')
+    <div class="content mt-3">
+        <div class="animated fadeIn">
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="pull-left">
+                        <strong>Data Botol</strong>
+                    </div>
+                    <div class="pull-right">
+                        <a href="{{ url('botol') }}" class="btn btn-secondary btn-sm">
+                            <i class="fa fa-undo"></i>Back
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    
+                    <div class="row">
+                        <div class="col-md-4 offset-md-4">
             <form action="{{url('botol',$data->id)}}" method="POST">
                 @method('PATCH')
                 @csrf
@@ -38,19 +46,6 @@
                     @enderror
                 </div>
                 <div class="form-group">
-                    <label>Harga Pembelian</label>
-                    <input 
-                    type="number" 
-                    name="harga_pembelian" 
-                    value="{{old('harga_pembelian', $data->harga_pembelian)}}" 
-                    class="form-control 
-                    @error('harga_pembelian') is-invalid @enderror" 
-                    autofocus>
-                    @error('harga_pembelian')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="form-group">
                     <label>Harga Penjualan</label>
                     <input 
                     type="number" 
@@ -64,12 +59,28 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                <button class="btn btn-secondary" type="button" onclick="history.go(-1);" data-dismiss="modal">Cancel</button>
-                <button class="btn btn-success" type="submit">Save</button>
-            </form>
-        </div>
+                <div class="form-group">
+                    <label>Harga Reseller</label>
+                    <input 
+                    type="number" 
+                    name="harga_reseller" 
+                    value="{{old('harga_reseller', $data->harga_reseller)}}" 
+                    class="form-control 
+                    @error('harga_reseller') is-invalid @enderror" 
+                    autofocus
+                    >
+                    @error('harga_reseller')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                
+                <button class="btn btn-success" type="submit">Update</button>
+        </form>
         </div>
     </div>
-    </div>
+</div>
+</div>
+
+</div>
 </div>
 @endsection

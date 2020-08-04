@@ -1,17 +1,25 @@
 @extends('main')
-@section('content')
-<div class="container-fluid">
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Table Pelanggan</h1>
-    </div>
+@section('title', 'Mitra Toko')
 
-    <!-- DataTales Example -->
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Edit Data Pelanggan Parfum</h6>
-        </div>
-        <div class="card-body">
-        <div class="table-responsive">
+@section('content')
+    <div class="content mt-3">
+        <div class="animated fadeIn">
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="pull-left">
+                        <strong>Data Mitra Toko</strong>
+                    </div>
+                    <div class="pull-right">
+                        <a href="{{ url('pelanggan') }}" class="btn btn-secondary btn-sm">
+                            <i class="fa fa-undo"></i>Back
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    
+                    <div class="row">
+                        <div class="col-md-4 offset-md-4">
             <form action="{{url('pelanggan',$data->id)}}" method="POST">
                 @method('PATCH')
                 @csrf
@@ -48,13 +56,14 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                
-                <button class="btn btn-secondary" type="button" onclick="history.go(-1);" data-dismiss="modal">Cancel</button>
-                <button class="btn btn-success" type="submit">Save</button>
-            </form>
-        </div>
+
+                <button class="btn btn-success" type="submit">Update</button>
+        </form>
         </div>
     </div>
-    </div>
+</div>
+</div>
+
+</div>
 </div>
 @endsection

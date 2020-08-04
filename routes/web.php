@@ -16,23 +16,44 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('auth.login');
 });
-Route::get('/test', 'TestController@index');
 
 Auth::routes();
+
+//custom
+Route::get('/barang/cetak', 'BarangCOntroller@cetak');
+Route::get('/botol/cetak', 'BotolController@cetak');
+Route::get('/penjualan/cetak', 'PenjualanController@cetak');
+Route::get('/penjualan_parfum/cetak', 'PenjualanParfumController@cetak');
+Route::get('/pembelian/cetak', 'PembelianController@cetak');
+Route::get('/pembelian_botol/cetak', 'PembelianBotolController@cetak');
+Route::get('/supplier/cetak', 'SupplierController@cetak');
+
+Route::get('/final_pembelian/cetak', 'FinalPembelianController@cetak');
+Route::get('/final_pembelian_botol/cetak', 'FinalPembelianBotolController@cetak');
+
+
 
 Route::get('/home', 'HomeController@index')->name('home');
 
 //person
-Route::resource('pelanggan', 'PelangganController')->name('*', 'pelanggan');
-Route::resource('supplier', 'SupplierController')->name('*', 'supplier');
+Route::resource('supplier', 'SupplierController');
+Route::resource('pelanggan', 'PelangganController');
 
 //goods
-Route::resource('barang', 'BarangController')->name('*', 'barang');
-Route::resource('botol', 'BotolController')->name('*', 'botol');
+Route::resource('barang', 'BarangController');
+Route::resource('botol', 'BotolController');
 
-//purchase
-Route::resource('pembelian', 'PembelianController')->name('*', 'pembelian');
-Route::resource('pembelian_botol', 'PembelianBotolController')->name('*', 'pembelian_botol');
+//pemesanan
+Route::resource('pembelian', 'PembelianController');
+Route::resource('pembelian_botol', 'PembelianBotolController');
+
+//pemesanan
+Route::resource('final_pembelian', 'FinalPembelianController');
+Route::resource('final_pembelian_botol', 'FinalPembelianBotolController');
 
 //sale
-Route::resource('penjualan', 'PenjualanController')->name('*', 'penjualan');
+Route::resource('penjualan', 'PenjualanController');
+Route::resource('penjualan_parfum', 'PenjualanParfumController');
+
+//delivery
+Route::resource('pengiriman', 'PengirimanController');

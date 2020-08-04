@@ -6,18 +6,32 @@ use App\Barang;
 use App\Pembelian;
 use App\Supplier;
 use Illuminate\Http\Request;
+use PDF;
 
 class PembelianController extends Controller
 {
+    public function cetak()
+    {
+        $pembelian = Pembelian::all();
+        $supplier = Supplier::all();
+        $barang = Barang::all();
+        $total = Pembelian::where('status', 'Diterima Gudang ')->sum('total_pembelian');
+
+        $pdf = PDF::loadview('laporan_pembelian', compact('pembelian', 'supplier', 'barang', 'total'));
+        return $pdf->download('laporan_pembelian');
+    }
+
     public function index()
     {
         $pembelian = Pembelian::all();
         $supplier = Supplier::all();
         $barang = Barang::all();
+        $total = Pembelian::where('status', 'Diterima Gudang ')->sum('total_pembelian');
         return view('pembelian.index', [
             'pembelian' => $pembelian,
             'supplier' => $supplier,
             'barang' => $barang,
+            'total' => $total,
         ]);
     }
 
@@ -28,7 +42,9 @@ class PembelianController extends Controller
      */
     public function create()
     {
-        //
+        $supplier = Supplier::all();
+        $barang = Barang::all();
+        return view('pembelian.add', compact('supplier', 'barang'));
     }
 
     /**
@@ -43,20 +59,32 @@ class PembelianController extends Controller
             'id_barang' => 'required',
             'supplier_id' => 'required',
             'jumlah' => 'required',
+            'harga' => 'required',
         ]);
         $pembelian = new Pembelian;
-        $pembelian->supplier_id = $request->supplier_id;
-        $pembelian->jumlah = $request->jumlah;
+
+        $supp = $request->supplier_id;
+        $supp_explode = explode('|', $supp);
+
+        $pembelian->supplier_id = $supp_explode[0];
+        $pembelian->harga = $request->harga;
         $pembelian->id_barang = $request->id_barang;
         $pembelian->total_pembelian = 0;
+        $pembelian->status = "Menunggu Acc Owner";
+
+        if ($request->jumlah >= $supp_explode[1]) {
+            $pembelian->jumlah = $request->jumlah;
+        } else {
+            return "Pemesanan tidak memenuhi Syarat minimal pemesanan dari supplier";
+        }
         $pembelian->save();
 
-        $barang = Barang::findOrFail($request->id_barang);
-        $barang->jumlah_parfum += $request->jumlah;
-        $barang->save();
+        // $barang = Barang::findOrFail($request->id_barang);
+        // $barang->jumlah_parfum += $request->jumlah;
+        // $barang->save();
 
         // return $request;
-        return redirect('pembelian')->with('status', 'Data pembelian berhasil di Tambah !');
+        return redirect('pembelian')->with('status', 'Pengajuan pemesanan berhasil di ajukan');
     }
 
     /**
@@ -67,7 +95,11 @@ class PembelianController extends Controller
      */
     public function show($id)
     {
-        //
+        $pemesanan = Pembelian::find($id);
+        // return view('penjualan.update', ['penjualan' => $penjualan]);
+
+        $pdf = PDF::loadview('nota_pemesanan_parfum', compact('pemesanan'))->setPaper('a4', 'landscape');
+        return $pdf->download('nota_pemesanan_parfum');
     }
 
     /**
@@ -79,7 +111,8 @@ class PembelianController extends Controller
     public function edit($id)
     {
         $pembelian = Pembelian::find($id);
-        return view('pembelian.update', ['pembelian' => $pembelian]);
+        $supplier = Supplier::all();
+        return view('pembelian.update', compact('pembelian', 'supplier'));
     }
 
     /**
@@ -91,18 +124,23 @@ class PembelianController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validateData = $request->validate([
-            'jumlah' => 'required',
-        ]);
         $pembelian = Pembelian::find($id);
-        $pembelian->jumlah = $request->jumlah;
-        $pembelian->total_pembelian = 0;
-        $pembelian->save();
-        if ($pembelian->save()) {
-            return redirect('pembelian')->with('status', 'Data pembelian berhasil di Update !');
-        } else {
-            return "ERROR";
+
+        if ($request->status == "Menunggu Acc Owner") {
+            $validateData = $request->validate([
+                'min_parfum' => 'required|numeric',
+                'jumlah' => 'required|numeric|lebih_dari:min_parfum',
+                'harga' => 'required',
+            ]);
+
+            $pembelian->id_barang = $request->barang_id;
+            $pembelian->harga = $request->harga;
+            $pembelian->jumlah = $request->jumlah;
         }
+
+        $pembelian->status = $request->status;
+        $pembelian->save();
+        return redirect('pembelian')->with('status', 'Data pembelian berhasil di Update !');
     }
 
     /**

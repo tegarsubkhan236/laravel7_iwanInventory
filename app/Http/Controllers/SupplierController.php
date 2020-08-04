@@ -25,7 +25,7 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        //
+        return view('supplier.add');
     }
 
     /**
@@ -40,11 +40,15 @@ class SupplierController extends Controller
             'nama' => 'required',
             'alamat' => 'required',
             'no_telp' => 'required',
+            'min_parfum' => 'required',
+            'min_botol' => 'required',
         ]);
         $data = new Supplier;
         $data->nama = $request->nama;
         $data->no_telp = $request->no_telp;
         $data->alamat = $request->alamat;
+        $data->min_parfum = $request->min_parfum;
+        $data->min_botol = $request->min_botol;
         $data->save();
         return redirect('supplier')->with('status', 'Data supplier berhasil di Tambah !');
     }
@@ -85,11 +89,15 @@ class SupplierController extends Controller
             'nama' => 'required',
             'alamat' => 'required',
             'no_telp' => 'required',
+            'min_parfum' => 'required',
+            'min_botol' => 'required',
         ]);
         $data = Supplier::find($supplier)->first();
         $data->nama = $request->nama;
         $data->no_telp = $request->no_telp;
         $data->alamat = $request->alamat;
+        $data->min_parfum = $request->min_parfum;
+        $data->min_botol = $request->min_botol;
         $data->save();
         return redirect('supplier')->with('status', 'Data supplier berhasil di Tambah !');
     }
@@ -104,6 +112,6 @@ class SupplierController extends Controller
     {
         $data = Supplier::find($supplier);
         $data->delete();
-        return redirect('pelanggan')->with('status', 'Data pelanggan berhasil di Delete!');
+        return redirect('supplier')->with('status', 'Data supplier berhasil di Delete!');
     }
 }

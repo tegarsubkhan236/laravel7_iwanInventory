@@ -1,37 +1,61 @@
-@extends('layouts.app')
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Zain Parfume - Refill</title>
+    <meta name="description" content="Sufee Admin - HTML5 Admin Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-@section('content')
-<div class="container">
+    <link rel="apple-touch-icon" href="{{asset('style/apple-icon.png')}}">
+    <link rel="shortcut icon" href="{{asset('style/favicon.ico')}}">
 
-    <!-- Outer Row -->
-    <div class="row justify-content-center">
-    
-        <div class="col-xl-10 col-lg-12 col-md-9">
-        <div class="card o-hidden border-0 shadow-lg my-5">
-            <div class="card-body p-0">
-            <!-- Nested Row within Card Body -->
-            <div class="row">
-                <div class="col-lg-6 d-none d-lg-block bg-login"></div>
-                <div class="col-lg-6">
-                <div class="p-5">
-                    <div class="text-center">
-                        <h1 class="h4 text-gray-900 mb-4">Selamat Datang di <br>ZAIN Farfume</h1>
-                    </div>
-                    <form class="user" method="POST" action="{{ route('login') }}">
+    <link rel="stylesheet" href="{{asset('style/assets/css/normalize.css')}}">
+    <link rel="stylesheet" href="{{asset('style/assets/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('style/assets/css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{asset('style/assets/css/themify-icons.css')}}">
+    <link rel="stylesheet" href="{{asset('style/assets/css/flag-icon.min.css')}}">
+    <link rel="stylesheet" href="{{asset('style/assets/css/cs-skin-elastic.css')}}">
+    <!-- <link rel="stylesheet" href="assets/css/bootstrap-select.less"> -->
+    <link rel="stylesheet" href="{{asset('style/assets/scss/style.css')}}">
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
+
+</head>
+<body class="bg-dark">
+
+
+    <div class="sufee-login d-flex align-content-center flex-wrap">
+        <div class="container">
+            <div class="login-content">
+                <div class="login-logo">
+                    <a href="#">
+                        <h1>Zain Parfume - Refill</h1>
+                        <h3>Login</h3>
+                        {{-- <img class="align-content" src="{{asset('style/images/logo1.jpg')}}" alt=""> --}}
+                    </a>
+                </div>
+                <div class="login-form">
+                    <form method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="form-group">
-                            {{-- <input type="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..."> --}}
-                            <input id="email" type="email" class="form-control form-control-user @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="Enter Email Address..." autofocus>
+                            <label>Email address</label>
+                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="Email">
 
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                            @error('email')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
                         <div class="form-group">
-                            {{-- <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password"> --}}
-                            <input id="password" type="password" class="form-control form-control-user @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Password">
+                            <label>Password</label>
+                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" autofocus placeholder="Password">
 
                             @error('password')
                                 <span class="invalid-feedback" role="alert">
@@ -39,34 +63,30 @@
                                 </span>
                             @enderror
                         </div>
-                        <div class="form-group">
-                            <div class="custom-control custom-checkbox small">
-                                    <input class="custom-control-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                        <div class="checkbox">
+                            <label for="remember">
+                                <input type="checkbox"> Remember Me
+                            </label>
 
-                                    <label class="custom-control-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                            </div>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-user btn-block">
-                            {{ __('Login') }}
-                        </button>
-                        <hr>
+                        <button type="submit" class="btn btn-success btn-flat m-b-30 m-t-30">Sign in</button>
+                        
                     </form>
-                    <hr>
-                    <div class="text-center">
-                    <a class="small" href="forgot-password.html">Forgot Password?</a>
-                    </div>
-                    <div class="text-center">
-                    <a class="small" href="{{ route('register') }}">{{ __('Register') }}</a>
+                    <br><br>
+                    <div class="register-link m-t-15 text-center">
+                        <p>Don't have account ? <a href="{{ route('register') }}"> Sign Up Here</a></p>
                     </div>
                 </div>
-                </div>
             </div>
-            </div>
-        </div>
         </div>
     </div>
-</div>
-@endsection
 
+
+    <script src="{{asset('style/assets/js/vendor/jquery-2.1.4.min.js')}}"></script>
+    <script src="{{asset('style/assets/js/popper.min.js')}}"></script>
+    <script src="{{asset('style/assets/js/plugins.js')}}"></script>
+    <script src="{{asset('style/assets/js/main.js')}}"></script>
+
+
+</body>
+</html>

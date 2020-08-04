@@ -4,9 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Botol;
 use Illuminate\Http\Request;
+use PDF;
 
 class BotolController extends Controller
 {
+    public function cetak()
+    {
+        $botol = Botol::all();
+        $tanggal = Botol::latest('created_at')->first();
+        $pdf = PDF::loadview('laporan_botol', compact('botol', 'tanggal'));
+        return $pdf->download('laporan_botol');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +33,7 @@ class BotolController extends Controller
      */
     public function create()
     {
-        //
+        return view("botol.stock.add");
     }
 
     /**
@@ -39,8 +47,9 @@ class BotolController extends Controller
         $validateData = $request->validate([
             'nama_botol' => 'required',
             'jumlah_botol' => 'required',
-            'harga_pembelian' => 'numeric|required',
-            'harga_penjualan' => 'numeric|required|Harga_penjualan_harus_lebih_besar_dari_harga_pembelian:harga_pembelian',
+            'harga_penjualan' => 'numeric|required|lebih_dari:harga_reseller',
+            'harga_reseller' => 'numeric|required',
+            // 'harga_penjualan' => 'numeric|required|Harga_penjualan_harus_lebih_besar_dari_harga_pembelian:harga_pembelian',
         ]);
         $messages = [
             'validation.greater_than_field' => ' harus lebih besar dari harga pembelian.',
@@ -48,8 +57,8 @@ class BotolController extends Controller
         $data = new Botol;
         $data->nama_botol = $request->nama_botol;
         $data->jumlah_botol = $request->jumlah_botol;
-        $data->harga_pembelian = $request->harga_pembelian;
         $data->harga_penjualan = $request->harga_penjualan;
+        $data->harga_reseller = $request->harga_reseller;
         $data->save();
         return redirect('botol')->with('status', 'Data botol berhasil di Tambah !');
     }
@@ -89,8 +98,9 @@ class BotolController extends Controller
         $validateData = $request->validate([
             'nama_botol' => 'required',
             'jumlah_botol' => 'required',
-            'harga_pembelian' => 'numeric|required',
-            'harga_penjualan' => 'numeric|required|Harga_penjualan_harus_lebih_besar_dari_harga_pembelian:harga_pembelian',
+            'harga_penjualan' => 'required',
+            'harga_penjualan' => 'numeric|required|lebih_dari:harga_reseller',
+            'harga_reseller' => 'numeric|required',
         ]);
         $messages = [
             'validation.greater_than_field' => ' harus lebih besar dari harga pembelian.',
@@ -98,8 +108,8 @@ class BotolController extends Controller
         $data = Botol::find($id);
         $data->nama_botol = $request->nama_botol;
         $data->jumlah_botol = $request->jumlah_botol;
-        $data->harga_pembelian = $request->harga_pembelian;
         $data->harga_penjualan = $request->harga_penjualan;
+        $data->harga_reseller = $request->harga_reseller;
         $data->save();
         return redirect('botol')->with('status', 'Data botol berhasil di Update !');
     }
