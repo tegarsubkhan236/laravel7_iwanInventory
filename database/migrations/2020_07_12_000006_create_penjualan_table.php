@@ -21,9 +21,6 @@ class CreatePenjualanTable extends Migration
             $table->integer('total_penjualan')->unsigned();
             $table->timestamps();
 
-            $table->foreign('pelanggan_id')
-                ->references('id')->on('pelanggans')
-                ->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('barang_id')
                 ->references('id')->on('barangs')
                 ->onDelete('cascade')->onUpdate('cascade');
