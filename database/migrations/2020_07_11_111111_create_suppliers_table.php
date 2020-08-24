@@ -18,6 +18,8 @@ class CreateSuppliersTable extends Migration
             $table->string('nama', 50);
             $table->text('alamat');
             $table->string('no_telp', 20);
+            $table->integer('min_parfum');
+            $table->integer('min_botol');
             $table->timestamps();
         });
     }

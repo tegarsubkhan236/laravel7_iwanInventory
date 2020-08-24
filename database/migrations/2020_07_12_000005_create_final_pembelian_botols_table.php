@@ -16,7 +16,8 @@ class CreateFinalPembelianBotolsTable extends Migration
         Schema::create('final_pembelian_botols', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('pemesanan_id')->unsigned();
-            $table->string('status', 50);
+            $table->integer('harga');
+            $table->integer('jumlah');
             $table->text('keterangan');
             $table->timestamps();
 

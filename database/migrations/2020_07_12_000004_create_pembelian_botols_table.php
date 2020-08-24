@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePembelianTable extends Migration
+class CreatePembelianBotolsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,22 @@ class CreatePembelianTable extends Migration
      */
     public function up()
     {
-        Schema::create('pembelian', function (Blueprint $table) {
+        Schema::create('pembelian_botols', function (Blueprint $table) {
             $table->id();
             $table->date('tgl_pembelian')->nullable();
             $table->bigInteger('supplier_id')->unsigned();
-            $table->bigInteger('barang_id')->unsigned();
+            $table->bigInteger('botol_id')->unsigned();
             $table->integer('jumlah')->unsigned();
+            $table->integer('harga');
             $table->integer('total_pembelian')->unsigned();
+            $table->string('status');
             $table->timestamps();
+
             $table->foreign('supplier_id')
                 ->references('id')->on('suppliers')
                 ->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('barang_id')
-                ->references('id')->on('barangs')
+            $table->foreign('botol_id')
+                ->references('id')->on('botols')
                 ->onDelete('cascade')->onUpdate('cascade');
         });
     }
@@ -37,6 +40,6 @@ class CreatePembelianTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pembelian');
+        Schema::dropIfExists('pembelian_botols');
     }
 }

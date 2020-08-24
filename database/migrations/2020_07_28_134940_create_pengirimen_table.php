@@ -19,7 +19,9 @@ class CreatePengirimenTable extends Migration
             $table->bigInteger('barang_id')->unsigned();
             $table->integer('jumlah')->unsigned();
             $table->integer('total_penjualan')->unsigned();
+            $table->string('status', 50);
             $table->timestamps();
+
             $table->foreign('barang_id')
                 ->references('id')->on('barangs')
                 ->onDelete('cascade')->onUpdate('cascade');

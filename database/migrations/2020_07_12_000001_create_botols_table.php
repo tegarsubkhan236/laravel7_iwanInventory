@@ -17,8 +17,9 @@ class CreateBotolsTable extends Migration
             $table->id();
             $table->string("nama_botol", 50);
             $table->integer("jumlah_botol")->unsigned();
-            $table->integer("harga_pembelian")->unsigned();
+            $table->integer("min_stock");
             $table->integer("harga_penjualan")->unsigned();
+            $table->integer("harga_reseller")->unsigned();
             $table->timestamps();
         });
     }
