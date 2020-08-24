@@ -50,6 +50,8 @@ class FinalPembelianController extends Controller
         $validateData = $request->validate([
             'pemesanan_id' => 'required',
             'keterangan' => 'nullable',
+            'harga' => 'required',
+            'jumlah' => 'required',
         ]);
         $pembelian = new FinalPembelian;
 
@@ -58,10 +60,12 @@ class FinalPembelianController extends Controller
 
         $pembelian->pemesanan_id = $id_explode[0];
         $pembelian->keterangan = $request->keterangan;
+        $pembelian->harga = $request->harga;
+        $pembelian->jumlah = $request->jumlah;
         $pembelian->save();
 
         $barang = Barang::findOrFail($id_explode[1]);
-        $barang->jumlah_parfum += $id_explode[2];
+        $barang->jumlah_parfum += $request->jumlah;
         $barang->save();
 
         $status = Pembelian::findOrFail($id_explode[0]);

@@ -45,6 +45,17 @@
                     @enderror
                 </div>
                 <div class="form-group">
+                    <label>Minimal Stock</label>
+                    <input type="number" 
+                    name="min_stock" 
+                    value="{{ old('min_stock') }}" 
+                    class="form-control 
+                    @error('min_stock') is-invalid @enderror" autofocus>
+                    @error('min_stock')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group">
                     <label>Harga Penjualan</label>
                     <input 
                     type="number" 

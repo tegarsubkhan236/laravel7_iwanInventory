@@ -10,6 +10,15 @@ use PDF;
 
 class PengirimanController extends Controller
 {
+
+    public function cetak()
+    {
+        $pengiriman = Pengiriman::all()->sortByDesc('id');
+
+        $pdf = PDF::loadview('laporan_pengiriman', compact('pengiriman'));
+        return $pdf->download('laporan_pengiriman');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -103,7 +112,7 @@ class PengirimanController extends Controller
             $pengiriman->jumlah = $request->jumlah;
         }
 
-        if ($request->status == "Diterima ReSeller") {
+        if ($request->status == "Diterima Mitra Toko") {
             $barang = Barang::findOrFail($request->barang_id);
             $barang->jumlah_parfum = $barang->jumlah_parfum - $request->jumlah;
             $barang->save();

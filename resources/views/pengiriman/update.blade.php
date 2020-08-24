@@ -78,7 +78,7 @@
                 <div class="form-group">
                     <label>Status</label>
                     <select name="status" class="form-control">
-                        <option value="Diterima ReSeller">Diterima ReSeller</option>
+                        <option value="Diterima Mitra Toko">Diterima Mitra Toko</option>
                     </select>
                 </div>
                 @endif

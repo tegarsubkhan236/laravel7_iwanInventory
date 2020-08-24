@@ -28,6 +28,7 @@ Route::get('/pembelian/cetak', 'PembelianController@cetak');
 Route::get('/pembelian_botol/cetak', 'PembelianBotolController@cetak');
 Route::get('/supplier/cetak', 'SupplierController@cetak');
 
+Route::get('/pengiriman/cetak', 'PengirimanController@cetak');
 Route::get('/final_pembelian/cetak', 'FinalPembelianController@cetak');
 Route::get('/final_pembelian_botol/cetak', 'FinalPembelianBotolController@cetak');
 

@@ -47,6 +47,7 @@ class BotolController extends Controller
         $validateData = $request->validate([
             'nama_botol' => 'required',
             'jumlah_botol' => 'required',
+            'min_stock' => 'required',
             'harga_penjualan' => 'numeric|required|lebih_dari:harga_reseller',
             'harga_reseller' => 'numeric|required',
             // 'harga_penjualan' => 'numeric|required|Harga_penjualan_harus_lebih_besar_dari_harga_pembelian:harga_pembelian',
@@ -57,6 +58,7 @@ class BotolController extends Controller
         $data = new Botol;
         $data->nama_botol = $request->nama_botol;
         $data->jumlah_botol = $request->jumlah_botol;
+        $data->min_stock = $request->min_stock;
         $data->harga_penjualan = $request->harga_penjualan;
         $data->harga_reseller = $request->harga_reseller;
         $data->save();
@@ -98,16 +100,17 @@ class BotolController extends Controller
         $validateData = $request->validate([
             'nama_botol' => 'required',
             'jumlah_botol' => 'required',
-            'harga_penjualan' => 'required',
+            'min_stock' => 'required',
             'harga_penjualan' => 'numeric|required|lebih_dari:harga_reseller',
             'harga_reseller' => 'numeric|required',
         ]);
         $messages = [
-            'validation.greater_than_field' => ' harus lebih besar dari harga pembelian.',
+            'lebih_dari' => ' harus lebih besar dari harga Re Seller.',
         ];
         $data = Botol::find($id);
         $data->nama_botol = $request->nama_botol;
         $data->jumlah_botol = $request->jumlah_botol;
+        $data->min_stock = $request->min_stock;
         $data->harga_penjualan = $request->harga_penjualan;
         $data->harga_reseller = $request->harga_reseller;
         $data->save();

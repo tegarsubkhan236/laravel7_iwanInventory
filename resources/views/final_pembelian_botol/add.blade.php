@@ -39,8 +39,18 @@
                 </div>
 
                 <div class="form-group">
+                    <label>harga</label>
+                    <input  name="harga" type="number" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>jumlah</label>
+                    <input  name="jumlah" type="number" class="form-control">
+                </div>
+
+                <div class="form-group">
                     <label>Keterangan</label>
-                    <textarea name="keterangan" cols="30" rows="10" class="form-control"></textarea>
+                    <textarea name="keterangan" cols="20" rows="5" class="form-control"></textarea>
                 </div>
 
                 <button class="btn btn-success" type="submit">Save</button>

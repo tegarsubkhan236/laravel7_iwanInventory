@@ -8,7 +8,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="pull-left">
-                        <strong>Pemesanan Bibit Parfum</strong>
+                        <strong>Pembelian Bibit Parfum</strong>
                     </div>
                     <div class="pull-right">
                         <a href="{{ url('final_pembelian') }}" class="btn btn-secondary btn-sm">
@@ -39,8 +39,18 @@
                 </div>
 
                 <div class="form-group">
+                    <label>Harga</label>
+                    <input name="harga" type="number" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label>Jumlah</label>
+                    <input name="jumlah" type="number" class="form-control" />
+                </div>
+
+                <div class="form-group">
                     <label>Keterangan</label>
-                    <textarea name="keterangan" cols="30" rows="10" class="form-control"></textarea>
+                    <textarea name="keterangan" cols="20" rows="5" class="form-control"></textarea>
                 </div>
 
                 <button class="btn btn-success" type="submit">Save</button>

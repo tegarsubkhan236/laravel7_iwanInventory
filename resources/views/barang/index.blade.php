@@ -40,6 +40,7 @@
                                 <th>ID Parfum</th>
                                 <th>Nama Bibit Parfum</th>
                                 <th>Stock / ml</th>
+                                <th>Minimal Stock / ml</th>
                                 <th>Harga Penjualan</th>
                                 <th>Harga Reseller</th>
                                 @if (Auth::user()->name == 'gudang')
@@ -52,12 +53,8 @@
                             <tr>
                                 <td>{{ $x->id }}</td>
                                 <td>{{ $x->nama_parfum }}</td>
-                                @if ($x->jumlah_parfum <= 50)
-                                <td style="backgroud-color:red">{{ $x->jumlah_parfum }} ml</td>
-                                @endif
-                                @if ($x->jumlah_parfum > 50)
                                 <td>{{ $x->jumlah_parfum }} ml</td>
-                                @endif
+                                <td>{{ $x->min_stock }} ml</td>
                                 <td>Rp. {{ format_uang($x->harga_penjualan) }}</td>
                                 <td>Rp. {{ format_uang($x->harga_reseller) }}</td>
                                 @if (Auth::user()->name == 'gudang')

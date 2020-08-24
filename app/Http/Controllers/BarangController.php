@@ -51,6 +51,7 @@ class BarangController extends Controller
         $validateData = $request->validate([
             'nama_parfum' => 'required',
             'jumlah_parfum' => 'required',
+            'min_stock' => 'required',
             'harga_penjualan' => 'numeric|required|lebih_dari:harga_reseller',
             'harga_reseller' => 'numeric|required',
             // 'harga_penjualan' => 'numeric|required|Harga_penjualan_harus_lebih_besar_dari_harga_pembelian:harga_pembelian',
@@ -61,6 +62,7 @@ class BarangController extends Controller
         $data = new Barang;
         $data->nama_parfum = $request->nama_parfum;
         $data->jumlah_parfum = $request->jumlah_parfum;
+        $data->min_stock = $request->min_stock;
         $data->harga_penjualan = $request->harga_penjualan;
         $data->harga_reseller = $request->harga_reseller;
         $data->save();
@@ -102,6 +104,7 @@ class BarangController extends Controller
     {
         $validateData = $request->validate([
             'nama_parfum' => 'required',
+            'min_stock' => 'required',
             'jumlah_parfum' => 'required',
             'harga_penjualan' => 'numeric|required|lebih_dari:harga_reseller',
             'harga_reseller' => 'numeric|required',
@@ -109,6 +112,7 @@ class BarangController extends Controller
         $data = Barang::find($id);
         $data->nama_parfum = $request->nama_parfum;
         $data->jumlah_parfum = $request->jumlah_parfum;
+        $data->min_stock = $request->min_stock;
         $data->harga_penjualan = $request->harga_penjualan;
         $data->harga_reseller = $request->harga_reseller;
         $data->save();

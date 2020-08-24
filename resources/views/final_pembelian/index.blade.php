@@ -45,10 +45,6 @@
                         <th>Harga Pembelian</th>
                         <th>Total Harga</th>
                         <th>Keterangan</th>
-                        {{-- <th>Status</th> --}}
-                        {{-- @if (Auth::user()->name == 'owner')
-                        <th>Action</th>
-                        @endif --}}
                     </tr>
                 </thead>
                 <tbody>
@@ -59,9 +55,9 @@
                         <td>{{ $x->pemesanan->created_at->format('d-m-Y') }}</td>
                         <td>{{ $x->pemesanan->supplier->nama }}</td>
                         <td>{{ $x->pemesanan->barang->nama_parfum }}</td>
-                        <td>{{ $x->pemesanan->jumlah }} ml</td>
-                        <td>Rp. {{ format_uang($x->pemesanan->harga) }}</td>
-                        <td>Rp. {{  format_uang($total_pembelian = $x->pemesanan->jumlah *  $x->pemesanan->harga) }}</td>
+                        <td>{{ $x->jumlah }} ml</td>
+                        <td>Rp. {{ format_uang($x->harga) }}</td>
+                        <td>Rp. {{  format_uang($total_pembelian = $x->jumlah *  $x->harga) }}</td>
                         <td>{{ $x->keterangan }} </td>
                     </tr>
                     @endforeach

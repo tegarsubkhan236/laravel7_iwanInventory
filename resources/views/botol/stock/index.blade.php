@@ -40,6 +40,7 @@
                     <th>ID Botol</th>
                     <th>Botol</th>
                     <th>Stock</th>
+                    <th>Minimal Stock</th>
                     <th>Harga Penjualan</th>
                     <th>Harga Reseller</th>
                     @if (Auth::user()->name == 'gudang')
@@ -53,6 +54,7 @@
                     <td>{{ $x->id }}</td>
                     <td>{{ $x->nama_botol }}</td>
                     <td>{{ $x->jumlah_botol }}</td>
+                    <td>{{ $x->min_stock }}</td>
                     <td>Rp. {{ format_uang($x->harga_penjualan) }}</td>
                     <td>Rp. {{ format_uang($x->harga_reseller) }}</td>
                     @if (Auth::user()->name == 'gudang')
